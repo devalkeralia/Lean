@@ -1,0 +1,42 @@
+﻿{
+    "environment": "desktop",
+
+	"environments": {
+		"desktop": {}
+	},
+
+	// Delete the configuration after loading
+    "delete-config": "false",
+	"beta-mode":"false",
+	"provider":"DigitalOcean",
+	"live-result-sync-folder":"",
+	
+	//Amazon S3 Access
+	"disable-s3-sync": "false",
+	"amazon-secretkey":"QwA1Ni36kcEwib2r95soY8LRVa1QHzJKzEkjVDoI",
+	"amazon-accesskey":"AKIAITPUQ2JXH7AKJ64Q",
+	"amazon-userid":"deval",
+	"amazon-bucketname":"oanda.quantconnect.com",
+	
+	
+	"fxcm-pin":"01932473",
+	"fxcm-userId":"D101942181",
+	"fxcm-password":"D101942181",
+	"fxcm-url":"http://www.fxcorporate.com/Hosts.jsp",
+	"fxcm-connection":"Demo",
+
+	//Windows:
+	"data-cache-directory":"K:\\cache",
+	"data-sync-directory":"K:\\oandaData",
+	"quantquote-processor-zzip":"zzip.exe",
+
+	//Start and End dates:
+	"date-queue-start": "20150826",
+	"date-queue-end": "20150826",
+
+	"data-input-directory": "C:\\Server\\www\\Lean\\Data\\forex\\fxcm\\tick",
+	"data-output-directory": "H:\\LeanDataOutput",
+	"mark-up-csv-file": "UTPMarkUpsDiff.csv"
+
+
+}
