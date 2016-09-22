@@ -12,19 +12,8 @@
 	"live-result-sync-folder":"",
 	
 	//Amazon S3 Access
-	"disable-s3-sync": "false",
-	"amazon-secretkey":"QwA1Ni36kcEwib2r95soY8LRVa1QHzJKzEkjVDoI",
-	"amazon-accesskey":"AKIAITPUQ2JXH7AKJ64Q",
-	"amazon-userid":"deval",
-	"amazon-bucketname":"oanda.quantconnect.com",
+	"disable-s3-sync": "true",
 	
-	
-	"fxcm-pin":"01932473",
-	"fxcm-userId":"D101942181",
-	"fxcm-password":"D101942181",
-	"fxcm-url":"http://www.fxcorporate.com/Hosts.jsp",
-	"fxcm-connection":"Demo",
-
 	//Windows:
 	"data-cache-directory":"K:\\cache",
 	"data-sync-directory":"K:\\oandaData",
