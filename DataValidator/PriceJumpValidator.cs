@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using QuantConnect;
 using QuantConnect.Logging;
@@ -21,80 +22,55 @@ namespace DataValidator
 
         public string Process()
         {
-            Parallel.ForEach(_symbolPaths, symbolPath =>
+            Parallel.ForEach(_symbolPaths, file =>
             {
-                var files = Directory.EnumerateFiles(symbolPath);
-                var symbol = new DirectoryInfo(symbolPath);
+                if(!file.Contains("equity")) return;
+
+                var symbol = new FileInfo(file).Name.Replace(".zip", "");
+                var first = false;
                 var faultyDataList = new List<string>();
-                var overnightPrice = 0m;
-                var lastLine = "";
-
-                foreach (var file in files)
+                string firstDate;
+                var yahooDataCollector = new YahooDataCollector();
+                var isDataCollectedSuccessfully = false;
+                var zipInfo = new FileInfo(file);
+                using (var fileStream = File.OpenRead(zipInfo.FullName))
+                using (var reader = Compression.UnzipStream(fileStream))
                 {
-                    var isOvernightChecked = false;
-                    var isFileDetected = false;
-                    var previousPrice = 0m;
-                    var zipInfo = new FileInfo(file);
-                    using (var fileStream = File.OpenRead(zipInfo.FullName))
-                    using (var reader = Compression.UnzipStream(fileStream))
+                    if (reader == null) Console.WriteLine("READER WAS NULL!!!!" + zipInfo);
+                    string line;
+                    while (reader != null && (line = reader.ReadLine()) != null)
                     {
-                        if (reader == null) Console.WriteLine("READER WAS NULL!!!!" + zipInfo);
-                        string line;
-                        while (reader != null && (line = reader.ReadLine()) != null)
+                        var csv = line.Split(',');
+                        var price = Convert.ToDecimal(csv[4]);
+                        var date = csv[0].Substring(0, 8);
+
+                        if (!first)
                         {
-                            var csv = line.Split(',');
-                            var price = Convert.ToDecimal(csv[1]);
-
-                            //Overnight Price check
-                            if (overnightPrice != 0m && !isOvernightChecked)
-                            {
-                                isOvernightChecked = true;
-                                if (IsPriceDeltaLarge(overnightPrice, price, _priceDeltaPercent))
-                                {
-                                    if (!isFileDetected)
-                                        faultyDataList.Add(symbol.Name + " - " + zipInfo.Name.Substring(0,8));
-                                    isFileDetected = true;
-                                }
-                            }
-
-                            //Check between first two entries of the file
-                            if (previousPrice == 0)
-                            {
-                                line = reader.ReadLine();
-                                var csv2 = line.Split(',');
-                                previousPrice = Convert.ToDecimal(csv2[1]);
-
-                                if (IsPriceDeltaLarge(price, previousPrice, _priceDeltaPercent))
-                                {
-                                    if (!isFileDetected)
-                                        faultyDataList.Add(symbol.Name + " - " + zipInfo.Name.Substring(0, 8));
-                                    isFileDetected = true;
-                                }
-                            }
-                            // Check for the rest of the entries
-                            else
-                            {
-                                if (IsPriceDeltaLarge(price, previousPrice, _priceDeltaPercent))
-                                {
-                                    if (!isFileDetected)
-                                        faultyDataList.Add(symbol.Name + " - " + zipInfo.Name.Substring(0, 8));
-                                    isFileDetected = true;
-                                }
-                            }
-                            previousPrice = price;
-
-                            //Takes the last minute data from the stream
-                            if (reader.Peek() == -1)
-                            {
-                                lastLine = line;
-                            }
+                            firstDate = csv[0].Substring(0, 8);
+                            isDataCollectedSuccessfully = yahooDataCollector.GetStockPriceHistory(symbol, 0, DateTime.ParseExact(firstDate, "yyyyMMdd", null), DateTime.Today.AddDays(-1));
+                            first = true;
                         }
-                        var csvOvernight = lastLine.Split(',');
-                        overnightPrice = Convert.ToDecimal(csvOvernight[1]);
-                        Log.LogHandler.Debug("Done with file " + file);
-                    }
-                }
 
+                        if (!isDataCollectedSuccessfully)
+                        {
+                            Log.Error("Expired or not data found for " + symbol);
+                            break;
+                        }
+
+                        if (!yahooDataCollector.CloseData.ContainsKey(date))
+                        {
+                            continue;
+                        }
+
+                        var yahooPrice = Convert.ToDecimal(yahooDataCollector.CloseData[date]);
+
+                        if (IsPriceDeltaLarge(price, yahooPrice, _priceDeltaPercent))
+                        {
+                            faultyDataList.Add(symbol + " - " + date);
+                        }
+                    }
+                    Log.LogHandler.Debug("Done with file " + file);
+                }
                 outputErrors += string.Join("\n", faultyDataList);
             });
 

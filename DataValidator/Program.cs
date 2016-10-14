@@ -25,7 +25,7 @@ namespace DataValidator
             var priceDeltaPercent = Config.GetInt("price-delta-percent");
 
             //Validates price jumps
-            var symbolPaths = GetSymbolPath(InputDirectory, Resolution.Minute);
+            var symbolPaths = GetSymbolPath(InputDirectory, Resolution.Daily);
             var priceJumpValidator = new PriceJumpValidator(symbolPaths, priceDeltaPercent);
             var priceJumpErrors = priceJumpValidator.Process();
             
@@ -37,7 +37,7 @@ namespace DataValidator
             if(priceJumpErrors != "") outputErrors += "Symbols and Dates with price jumps are: \n" + priceJumpErrors + "\n\n";
             if (missingDatesErrors != "") outputErrors += "Symbols and Dates with missing dates are: \n" + missingDatesErrors;
 
-            //Sends mail if some errors found
+//          Sends an e-mail if any errors are found
             if(outputErrors != "")
                 mail.Error("Data Validator Error Report", outputErrors);
         }
@@ -45,7 +45,6 @@ namespace DataValidator
         private static IEnumerable<string> GetSymbolPath(string directory, Resolution resolution)
         {
             var securityTypes = Enum.GetValues(typeof(SecurityType)).OfType<SecurityType>().ToArray();
-
             foreach (var securityType in securityTypes)
             {
                 if(securityType == SecurityType.Option) continue;
@@ -68,9 +67,16 @@ namespace DataValidator
                         continue;
                     }
 
-                    var minuteSymbols = Directory.EnumerateDirectories(market + "\\" + resolution.ToLower());
+                    IEnumerable<string> minuteSymbols;
+                    if (resolution == Resolution.Daily || resolution == Resolution.Hour)
+                    {
+                        minuteSymbols = Directory.EnumerateFiles(market + "\\" + resolution.ToLower());
+                    }
+                    else
+                    {
+                        minuteSymbols = Directory.EnumerateDirectories(market + "\\" + resolution.ToLower());
+                    }
                     
-
                     foreach (var symbol in minuteSymbols)
                     {
                         yield return symbol;

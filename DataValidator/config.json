@@ -10,20 +10,8 @@
 	"beta-mode":"false",
 	"provider":"DigitalOcean",
 	"live-result-sync-folder":"",
-	
-	//Windows:
-	"data-cache-directory":"C:\\Server\\www\\LeanCloud\\DataUpdate\\cache",
-	"data-sync-directory":"H:\\Lean Projects\\Lean Mini Projects\\Outputs",
-	"quantquote-processor-zzip":"zzip.exe",
 
-	//Start and End dates:
-	"date-queue-start": "20150115",
-	"date-queue-end": "20150115",
-
-
-	"disable-equity": true,
-	"data-input-directory":  "H:\\Lean Projects\\Lean Mini Projects\\Inputs",
-	//"data-input-directory":  "H:\\Lean Projects\\LeanMasterData",
+	"data-input-directory":  "",
 	"price-delta-percent": 20,
 
 	//Mail credentials
