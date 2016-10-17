@@ -26,7 +26,7 @@ namespace BenzingaApi
             var pageCountDividends = 1;
 
             restRequestDividends.AddParameter("token", "a50191ff74314687a4ceb5f293695502");
-            restRequestDividends.AddParameter("page", 0);
+            restRequestDividends.AddParameter("page", 3);
             restRequestDividends.AddParameter("parameters[date_from]", DateTime.Today.AddDays(-1).ToString("yyyy-MM-dd"));
             restRequestDividends.AddParameter("pagesize", 1000);
 
@@ -63,6 +63,7 @@ namespace BenzingaApi
             var pageCountSplits = 1;
 
             restRequestSplits.AddParameter("token", "a50191ff74314687a4ceb5f293695502");
+            restRequestSplits.AddParameter("page", 0);
             restRequestSplits.AddParameter("parameters[date_from]", DateTime.Today.AddDays(-1).ToString("yyyy-MM-dd"));
             restRequestSplits.AddParameter("pagesize", "1000");
 
