@@ -62,6 +62,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataValidator", "DataValida
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenzingaData", "BenzingaData\BenzingaData.csproj", "{DB38B54C-38F7-4149-ADBC-7ACEB231E139}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenzingaApi", "BenzingaApi\BenzingaApi.csproj", "{BB69406C-7B9C-4B6D-A548-E38FC56B2EEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -216,6 +218,14 @@ Global
 		{DB38B54C-38F7-4149-ADBC-7ACEB231E139}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DB38B54C-38F7-4149-ADBC-7ACEB231E139}.Release|x64.ActiveCfg = Release|Any CPU
 		{DB38B54C-38F7-4149-ADBC-7ACEB231E139}.Release|x64.Build.0 = Release|Any CPU
+		{BB69406C-7B9C-4B6D-A548-E38FC56B2EEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB69406C-7B9C-4B6D-A548-E38FC56B2EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB69406C-7B9C-4B6D-A548-E38FC56B2EEB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BB69406C-7B9C-4B6D-A548-E38FC56B2EEB}.Debug|x64.Build.0 = Debug|Any CPU
+		{BB69406C-7B9C-4B6D-A548-E38FC56B2EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB69406C-7B9C-4B6D-A548-E38FC56B2EEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB69406C-7B9C-4B6D-A548-E38FC56B2EEB}.Release|x64.ActiveCfg = Release|Any CPU
+		{BB69406C-7B9C-4B6D-A548-E38FC56B2EEB}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
